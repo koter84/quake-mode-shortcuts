@@ -85,31 +85,92 @@ export default class QuakeModeExtension extends Extension {
       { key: "resize-width-increase", action: () => this._resizeWidth(1) },
     ];
 
-    for (const shortcut of resizeShortcuts) {
+    if (this._settings.get_boolean("quake-mode-enable-resize-shortcuts")) {
+      for (const shortcut of resizeShortcuts) {
+        Main.wm.addKeybinding(
+          shortcut.key,
+          this._settings.get_child("accelerators"),
+          Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+          Shell.ActionMode.NORMAL,
+          shortcut.action,
+        );
+      }
+    }
+
+    this._settings.connect(
+      "changed::quake-mode-enable-resize-shortcuts",
+      (settings, key) => {
+        const enabled = settings.get_boolean(key);
+        const resizeKeys = [
+          "resize-height-increase",
+          "resize-height-decrease",
+          "resize-width-decrease",
+          "resize-width-increase",
+        ];
+
+        if (enabled) {
+          for (const shortcut of resizeShortcuts) {
+            Main.wm.addKeybinding(
+              shortcut.key,
+              this._settings.get_child("accelerators"),
+              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+              Shell.ActionMode.NORMAL,
+              shortcut.action,
+            );
+          }
+        } else {
+          for (const resizeKey of resizeKeys) {
+            Main.wm.removeKeybinding(resizeKey);
+          }
+        }
+      },
+    );
+
+    // Register monitor switching shortcuts
+    if (this._settings.get_boolean("quake-mode-enable-monitor-shortcuts")) {
       Main.wm.addKeybinding(
-        shortcut.key,
+        "switch-monitor-left",
         this._settings.get_child("accelerators"),
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode.NORMAL,
-        shortcut.action,
+        () => this._switchMonitor(-1),
+      );
+
+      Main.wm.addKeybinding(
+        "switch-monitor-right",
+        this._settings.get_child("accelerators"),
+        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+        Shell.ActionMode.NORMAL,
+        () => this._switchMonitor(1),
       );
     }
 
-    // Register monitor switching shortcuts
-    Main.wm.addKeybinding(
-      "switch-monitor-left",
-      this._settings.get_child("accelerators"),
-      Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-      Shell.ActionMode.NORMAL,
-      () => this._switchMonitor(-1),
-    );
-    
-    Main.wm.addKeybinding(
-      "switch-monitor-right",
-      this._settings.get_child("accelerators"),
-      Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-      Shell.ActionMode.NORMAL,
-      () => this._switchMonitor(1),
+    this._settings.connect(
+      "changed::quake-mode-enable-monitor-shortcuts",
+      (settings, key) => {
+        const enabled = settings.get_boolean(key);
+
+        if (enabled) {
+          Main.wm.addKeybinding(
+            "switch-monitor-left",
+            this._settings.get_child("accelerators"),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL,
+            () => this._switchMonitor(-1),
+          );
+
+          Main.wm.addKeybinding(
+            "switch-monitor-right",
+            this._settings.get_child("accelerators"),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL,
+            () => this._switchMonitor(1),
+          );
+        } else {
+          Main.wm.removeKeybinding("switch-monitor-left");
+          Main.wm.removeKeybinding("switch-monitor-right");
+        }
+      },
     );
   }
 
@@ -265,9 +326,26 @@ export default class QuakeModeExtension extends Extension {
       const totalMonitors = global.display.get_n_monitors();
       if (totalMonitors <= 1) return; // No point switching if only one monitor
 
-      const currentMonitor = this._settings.get_int("quake-mode-monitor");
-      let nextMonitor;
+      let currentMonitor = this._settings.get_int("quake-mode-monitor");
       
+      // If set to follow mouse (-1), get current monitor from pointer
+      if (currentMonitor < 0) {
+        const [x, y] = global.get_pointer();
+        for (let i = 0; i < totalMonitors; i++) {
+          const rect = global.display.get_monitor_geometry(i);
+          if (x >= rect.x && x < rect.x + rect.width &&
+              y >= rect.y && y < rect.y + rect.height) {
+            currentMonitor = i;
+            break;
+          }
+        }
+        // If still -1, use primary monitor
+        if (currentMonitor < 0) {
+          currentMonitor = global.display.get_primary_monitor();
+        }
+      }
+      
+      let nextMonitor;
       if (direction > 0) {
         // Switch right/next
         nextMonitor = (currentMonitor + 1) % totalMonitors;

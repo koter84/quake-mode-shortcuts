@@ -73,7 +73,7 @@
 		</key>
 
 		<key name="quake-mode-monitor" type="i">
-			<range min="0" max="20"/>
+			<range min="-1" max="20"/>
 			<default>0</default>
 		</key>
 
@@ -90,6 +90,10 @@
 		<key name="quake-mode-gap" type="i">
 			<range min="0"/>
 			<default>10</default>
+		</key>
+
+		<key name="quake-mode-animation-enabled" type="b">
+			<default>true</default>
 		</key>
 
 		<key name="quake-mode-animation-time" type="d">
@@ -125,6 +129,14 @@
 		<key name="resize-step" type="i">
 			<range min="1" max="20"/>
 			<default>5</default>
+		</key>
+
+		<key name="quake-mode-enable-resize-shortcuts" type="b">
+			<default>true</default>
+		</key>
+
+		<key name="quake-mode-enable-monitor-shortcuts" type="b">
+			<default>true</default>
 		</key>
 
 		<child name="accelerators" schema="com.initiateit.quake-mode.accelerators"/>

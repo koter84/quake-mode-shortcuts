@@ -146,6 +146,10 @@ export var QuakeModeApp = class {
     return this.settings.get_boolean("quake-mode-focusout");
   }
 
+  get animationEnabled() {
+    return this.settings.get_boolean("quake-mode-animation-enabled");
+  }
+
   get ainmation_time() {
     return this.settings.get_double("quake-mode-animation-time") * 1000;
   }
@@ -179,18 +183,45 @@ export var QuakeModeApp = class {
   }
 
   get monitor() {
-    const { win, settings } = this;
+    const { settings } = this;
 
     const monitor = settings.get_int("quake-mode-monitor");
 
-    if (!win) return monitor;
-
-    if (monitor < 0) return 0;
+    // Follow mouse: -1 means get the monitor where the mouse cursor is
+    if (monitor < 0) {
+      return this._getMonitorAtPointer();
+    }
 
     const max = global.display.get_n_monitors() - 1;
     if (monitor > max) return max;
 
     return monitor;
+  }
+
+  /**
+   * Get the monitor index where the mouse pointer is currently located
+   * @returns {number} The monitor index
+   */
+  _getMonitorAtPointer() {
+    try {
+      const [x, y] = global.get_pointer();
+
+      // Find which monitor contains the pointer position
+      const numMonitors = global.display.get_n_monitors();
+      for (let i = 0; i < numMonitors; i++) {
+        const rect = global.display.get_monitor_geometry(i);
+        if (x >= rect.x && x < rect.x + rect.width &&
+            y >= rect.y && y < rect.y + rect.height) {
+          return i;
+        }
+      }
+
+      // Fallback to primary monitor if pointer not found in any monitor
+      return global.display.get_primary_monitor();
+    } catch (e) {
+      // If anything fails, return primary monitor
+      return global.display.get_primary_monitor();
+    }
   }
 
   toggle() {
@@ -298,7 +329,7 @@ export var QuakeModeApp = class {
   }
 
   show() {
-    const { child, focusout, valign } = this;
+    const { child, focusout, animationEnabled } = this;
 
     if (this.state !== state.RUNNING) return;
 
@@ -309,13 +340,23 @@ export var QuakeModeApp = class {
     const parent = child.get_parent();
     if (!parent) return;
 
-    this.isTransition = true;
+    this.place();
+    const { valign } = this;
 
     parent.set_child_above_sibling(child, null);
-    (child.translation_y = child.height * (valign === "top" ? -1 : valign === "center" ? 0 : 2)),
-      //@ts-expect-error Missing type. TODO: contribute to @girs
-      Main.wm.skipNextEffect(child);
+    //@ts-expect-error Missing type. TODO: contribute to @girs
+    Main.wm.skipNextEffect(child);
     Main.activateWindow(child.meta_window);
+
+    if (!animationEnabled) {
+      child.translation_y = 0;
+      if (focusout)
+        once(global.display, "notify::focus-window", () => this.hide());
+      return;
+    }
+
+    this.isTransition = true;
+    child.translation_y = child.height * (valign === "top" ? -1 : valign === "center" ? 0 : 2);
 
     //@ts-expect-error Missing type? TODO: investigate
     child.ease({
@@ -328,18 +369,23 @@ export var QuakeModeApp = class {
           once(global.display, "notify::focus-window", () => this.hide());
       },
     });
-
-    this.place();
   }
 
   hide() {
-    const { child, valign } = this;
+    const { child, valign, animationEnabled } = this;
 
     if (!child) return;
 
     if (this.state !== state.RUNNING) return;
 
     if (this.isTransition) return;
+
+    if (!animationEnabled) {
+      //@ts-expect-error
+      Main.wm.skipNextEffect(child);
+      child.meta_window.minimize();
+      return;
+    }
 
     this.isTransition = true;
 

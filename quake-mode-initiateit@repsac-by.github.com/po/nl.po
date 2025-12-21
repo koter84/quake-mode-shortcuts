@@ -70,9 +70,17 @@ msgstr "Onderaan"
 msgid "Vertical align"
 msgstr "Verticale uitlijning"
 
+#: quake-mode@repsac-by.github.com/prefs.js:176
+msgid "Follow Mouse"
+msgstr "Volg de muis"
+
 #: quake-mode@repsac-by.github.com/prefs.js:210
 msgid "Monitor"
 msgstr "Beeldscherm"
+
+#: quake-mode@repsac-by.github.com/prefs.js:215
+msgid "Enable Animation"
+msgstr "Animatie inschakelen"
 
 #: quake-mode@repsac-by.github.com/prefs.js:220
 msgid "Animation time - s"
@@ -105,3 +113,36 @@ msgstr "Sneltoetsen"
 #: quake-mode@repsac-by.github.com/indicator.js:48
 msgid "Settings"
 msgstr "Voorkeuren"
+
+msgid "Resize Step - %"
+msgstr "Verandering (in %)"
+
+msgid "Gap"
+msgstr ""
+
+msgid "Application Toggle Shortcuts"
+msgstr "Applicatie Sneltoetsen"
+
+msgid "Resize Shortcuts"
+msgstr "Grootte sneltoetsen"
+
+msgid "Increase Height"
+msgstr "Vergroot hoogte"
+
+msgid "Decrease Height"
+msgstr "Verklein hoogte"
+
+msgid "Decrease Width"
+msgstr "Verklein breedte"
+
+msgid "Increase Width"
+msgstr "Vergroot breedte"
+
+msgid "Resize shortcuts work when a quake window is focused"
+msgstr "Grootte sneltoetsen werken als een quake venster focus heeft"
+
+msgid "Monitor Shortcuts"
+msgstr "Monitor sneltoetsen"
+
+msgid "Monitor shortcuts work when a quake window is focused"
+msgstr "Monitor sneltoetsen werken als een quake venster focus heeft"

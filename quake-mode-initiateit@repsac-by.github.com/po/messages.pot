@@ -69,8 +69,16 @@ msgstr ""
 msgid "Vertical align"
 msgstr ""
 
+#: quake-mode@repsac-by.github.com/prefs.js:176
+msgid "Follow Mouse"
+msgstr ""
+
 #: quake-mode@repsac-by.github.com/prefs.js:210
 msgid "Monitor"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:215
+msgid "Enable Animation"
 msgstr ""
 
 #: quake-mode@repsac-by.github.com/prefs.js:220
@@ -105,8 +113,10 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-# New strings for resize functionality
 msgid "Resize Step - %"
+msgstr ""
+
+msgid "Gap"
 msgstr ""
 
 msgid "Application Toggle Shortcuts"
@@ -128,4 +138,10 @@ msgid "Increase Width"
 msgstr ""
 
 msgid "Resize shortcuts work when a quake window is focused"
+msgstr ""
+
+msgid "Monitor Shortcuts"
+msgstr ""
+
+msgid "Monitor shortcuts work when a quake window is focused"
 msgstr ""

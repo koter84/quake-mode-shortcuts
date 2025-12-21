@@ -245,6 +245,19 @@ const QuakeModePrefsWidget = GObject.registerClass(
 
       const monitors = getMonitors();
       let monitorCurrentlySelected;
+      const currentMonitorSetting = settings.get_int("quake-mode-monitor");
+
+      // Add "Follow Mouse" option first with value -1
+      const followMouseIter = monitorModel.append();
+      monitorModel.set(
+        followMouseIter,
+        [Columns.LABEL, Columns.VALUE],
+        [_("Follow Mouse"), -1],
+      );
+
+      if (currentMonitorSetting === -1) {
+        monitorCurrentlySelected = followMouseIter;
+      }
 
       for (const [idx, monitor] of monitors.entries()) {
         const iter = monitorModel.append();
@@ -255,7 +268,7 @@ const QuakeModePrefsWidget = GObject.registerClass(
           [`#${idx}: ${monitor.manufacturer} ${monitor.model}`, idx],
         );
 
-        if (idx === settings.get_int("quake-mode-monitor")) {
+        if (idx === currentMonitorSetting) {
           monitorCurrentlySelected = iter;
         }
       }
@@ -280,6 +293,19 @@ const QuakeModePrefsWidget = GObject.registerClass(
       this.attach(label(_("Monitor")), 0, ++r, 1, 1);
       this.attach(selectMonitor, 1, r, 1, 1);
 
+      // Animation enabled
+      const switchAnimation = new Gtk.Switch({ halign: Gtk.Align.START });
+
+      settings.bind(
+        "quake-mode-animation-enabled",
+        switchAnimation,
+        "state",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+
+      this.attach(label(_("Enable Animation")), 0, ++r, 1, 1);
+      this.attach(switchAnimation, 1, r, 1, 1);
+
       // Time
       const spinTime = new Gtk.SpinButton({ digits: 2 });
       spinTime.set_range(0, 2);
@@ -289,6 +315,14 @@ const QuakeModePrefsWidget = GObject.registerClass(
         "quake-mode-animation-time",
         spinTime,
         "value",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+
+      // Disable time spinner when animation is disabled
+      settings.bind(
+        "quake-mode-animation-enabled",
+        spinTime,
+        "sensitive",
         Gio.SettingsBindFlags.DEFAULT,
       );
 
@@ -563,15 +597,39 @@ const AcceleratorsWidget = GObject.registerClass(
         label: "<b>" + _("Resize Shortcuts") + "</b>",
         use_markup: true,
         halign: Gtk.Align.START,
-        margin_top: 20,
-        margin_bottom: 10,
+        margin_top: 20
       });
       this.append(resizeLabel);
+
+      // Enable Resize Shortcuts
+      const enableResizeShortcuts = new Gtk.Switch({ 
+        halign: Gtk.Align.START, 
+        margin_top: 10 
+      });
+      settings.bind(
+        "quake-mode-enable-resize-shortcuts",
+        enableResizeShortcuts,
+        "state",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+      const enableResizeLabel = new Gtk.Label({
+        label: _("Enable Resize Shortcuts"), 
+        halign: Gtk.Align.START, 
+        margin_top: 10 
+      });
+      const enableResizeGrid = new Gtk.Grid({ 
+        row_spacing: 6, 
+        column_spacing: 10
+      });
+      enableResizeGrid.attach(enableResizeLabel, 0, 0, 1, 1);
+      enableResizeGrid.attach(enableResizeShortcuts, 1, 0, 1, 1);
+      this.append(enableResizeGrid);
 
       // Create resize shortcuts grid
       const resizeGrid = new Gtk.Grid({
         row_spacing: 10,
         column_spacing: 10,
+        margin_top: 10,
         margin_start: 20,
       });
 
@@ -580,8 +638,6 @@ const AcceleratorsWidget = GObject.registerClass(
         { key: "resize-height-decrease", label: _("Decrease Height"), default: "Ctrl+Down" },
         { key: "resize-width-decrease", label: _("Decrease Width"), default: "Ctrl+Left" },
         { key: "resize-width-increase", label: _("Increase Width"), default: "Ctrl+Right" },
-        { key: "switch-monitor-left", label: _("Switch Monitor Left"), default: "Ctrl+Shift+Left" },
-        { key: "switch-monitor-right", label: _("Switch Monitor Right"), default: "Ctrl+Shift+Right" },
       ];
 
       for (let i = 0; i < resizeShortcuts.length; i++) {
@@ -601,18 +657,93 @@ const AcceleratorsWidget = GObject.registerClass(
         resizeGrid.attach(label, 0, i, 1, 1);
         resizeGrid.attach(accelLabel, 1, i, 1, 1);
       }
-
       this.append(resizeGrid);
 
       // Add info label
-      const infoLabel = new Gtk.Label({
+      const infoResizeLabel = new Gtk.Label({
         label: _("Resize shortcuts work when a quake window is focused"),
         halign: Gtk.Align.START,
         margin_top: 10,
         wrap: true,
       });
-      infoLabel.add_css_class("dim-label");
-      this.append(infoLabel);
+      infoResizeLabel.add_css_class("dim-label");
+      this.append(infoResizeLabel);
+
+      // Monitor Accelerators Section
+      const monitorLabel = new Gtk.Label({
+        label: "<b>" + _("Monitor Shortcuts") + "</b>",
+        use_markup: true,
+        halign: Gtk.Align.START,
+        margin_top: 20
+      });
+      this.append(monitorLabel);
+
+      // Enable Monitor Shortcuts
+      const enableMonitorShortcuts = new Gtk.Switch({ 
+        halign: Gtk.Align.START, 
+        margin_top: 10 
+      });
+      settings.bind(
+        "quake-mode-enable-monitor-shortcuts",
+        enableMonitorShortcuts,
+        "state",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+      const enableMonitorLabel = new Gtk.Label({
+        label: _("Enable Monitor Shortcuts"), 
+        halign: Gtk.Align.START, 
+        margin_top: 10 
+      });
+      const enableMonitorGrid = new Gtk.Grid({ 
+        row_spacing: 6, 
+        column_spacing: 10
+      });
+      enableMonitorGrid.attach(enableMonitorLabel, 0, 0, 1, 1);
+      enableMonitorGrid.attach(enableMonitorShortcuts, 1, 0, 1, 1);
+      this.append(enableMonitorGrid);
+
+      // Create monitor shortcuts grid
+      const monitorGrid = new Gtk.Grid({
+        row_spacing: 10,
+        column_spacing: 10,
+        margin_top: 10,
+        margin_start: 20,
+      });
+
+      const monitorShortcuts = [
+        { key: "switch-monitor-left", label: _("Switch Monitor Left"), default: "Ctrl+Shift+Left" },
+        { key: "switch-monitor-right", label: _("Switch Monitor Right"), default: "Ctrl+Shift+Right" },
+      ];
+
+      for (let i = 0; i < monitorShortcuts.length; i++) {
+        const shortcut = monitorShortcuts[i];
+        
+        const label = new Gtk.Label({
+          label: shortcut.label,
+          halign: Gtk.Align.END,
+        });
+        
+        const currentAccel = settings.get_child("accelerators").get_strv(shortcut.key)[0] || "";
+        const accelLabel = new Gtk.Label({
+          label: currentAccel || shortcut.default,
+          halign: Gtk.Align.START,
+        });
+        
+        monitorGrid.attach(label, 0, i, 1, 1);
+        monitorGrid.attach(accelLabel, 1, i, 1, 1);
+      }
+
+      this.append(monitorGrid);
+
+      // Add info label
+      const infoMonitorLabel = new Gtk.Label({
+        label: _("Monitor shortcuts work when a quake window is focused"),
+        halign: Gtk.Align.START,
+        margin_top: 10,
+        wrap: true,
+      });
+      infoMonitorLabel.add_css_class("dim-label");
+      this.append(infoMonitorLabel);
     }
   },
 );
