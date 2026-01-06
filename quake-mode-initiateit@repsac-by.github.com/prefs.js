@@ -80,6 +80,19 @@ const QuakeModePrefsWidget = GObject.registerClass(
       this.attach(label(_("Hide from Overview")), 0, ++r, 1, 1);
       this.attach(hideFromOverview, 1, r, 1, 1);
 
+      // Hide when unfocused
+      const hideWhenUnfocused = new Gtk.Switch({ halign: Gtk.Align.START });
+
+      settings.bind(
+        "quake-mode-hide-when-unfocused",
+        hideWhenUnfocused,
+        "state",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+
+      this.attach(label(_("Hide even when not in focus")), 0, ++r, 1, 1);
+      this.attach(hideWhenUnfocused, 1, r, 1, 1);
+
       // Always on top
       const alwaysOnTop = new Gtk.Switch({ halign: Gtk.Align.START });
 

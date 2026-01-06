@@ -158,6 +158,10 @@ export var QuakeModeApp = class {
     return this.settings.get_boolean("quake-mode-always-on-top");
   }
 
+  get hideWhenUnfocused() {
+    return this.settings.get_boolean("quake-mode-hide-when-unfocused");
+  }
+
   get halign() {
     // Check for per-app halign setting first
     const appHalign = this.appSettings.get_string(`app-${this.app_index}-halign`);
@@ -268,6 +272,8 @@ export var QuakeModeApp = class {
     if (win.has_focus()) return this.hide();
 
     if (win.is_hidden()) return this.show();
+
+	if (this.hideWhenUnfocused && !win.has_focus() && !win.is_hidden()) return this.hide();
 
     Main.activateWindow(win);
   }

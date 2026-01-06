@@ -17,131 +17,146 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: quake-mode@repsac-by.github.com/prefs.js:44
+#: quake-mode@repsac-by.github.com/prefs.js:52
 msgid "Icon"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:52
+#: quake-mode@repsac-by.github.com/prefs.js:64
 msgid "Minimize on focus out"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:60
+#: quake-mode@repsac-by.github.com/prefs.js:80
 msgid "Hide from Overview"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:68
+#: quake-mode@repsac-by.github.com/prefs.js:92
+msgid "Hide even when not in focus"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:104
 msgid "Always on Top"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:78
+#: quake-mode@repsac-by.github.com/prefs.js:120
 msgid "Width - %"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:88
+#: quake-mode@repsac-by.github.com/prefs.js:132
 msgid "Height - %"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:95
+#: quake-mode@repsac-by.github.com/prefs.js:156
+msgid "Resize Step - %"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:152
+msgid "Gap"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:172
 msgid "Left"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:96
+#: quake-mode@repsac-by.github.com/prefs.js:173
 msgid "Right"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:97
+#: quake-mode@repsac-by.github.com/prefs.js:174
 msgid "Center"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:126
+#: quake-mode@repsac-by.github.com/prefs.js:203
 msgid "Horizontal align"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:134
+#: quake-mode@repsac-by.github.com/prefs.js:214
 msgid "Top"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:135
+#: quake-mode@repsac-by.github.com/prefs.js:215
 msgid "Bottom"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:164
+#: quake-mode@repsac-by.github.com/prefs.js:247
 msgid "Vertical align"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:176
+#: quake-mode@repsac-by.github.com/prefs.js:268
 msgid "Follow Mouse"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:210
+#: quake-mode@repsac-by.github.com/prefs.js:307
 msgid "Monitor"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:215
+#: quake-mode@repsac-by.github.com/prefs.js:322
 msgid "Enable Animation"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:220
+#: quake-mode@repsac-by.github.com/prefs.js:344
 msgid "Animation time - s"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:242
+#: quake-mode@repsac-by.github.com/prefs.js:365
+msgid "Application Toggle Shortcuts"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:384
 msgid "Toggle"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:254
+#: quake-mode@repsac-by.github.com/prefs.js:410
 msgid "Action"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:259
+#: quake-mode@repsac-by.github.com/prefs.js:415
 msgid "Shortcut Key"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:264
+#: quake-mode@repsac-by.github.com/prefs.js:420
 msgid "Application"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:355
+#: quake-mode@repsac-by.github.com/prefs.js:633
+msgid "Resize Shortcuts"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:669
+msgid "Increase Height"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:670
+msgid "Decrease Height"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:671
+msgid "Decrease Width"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:672
+msgid "Increase Width"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:699
+msgid "Resize shortcuts work when a quake window is focused"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:707
+msgid "Monitor Shortcuts"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:757
+msgid "Monitor shortcuts work when a quake window is focused"
+msgstr ""
+
+#: quake-mode@repsac-by.github.com/prefs.js:768
 msgid "Main"
 msgstr ""
 
-#: quake-mode@repsac-by.github.com/prefs.js:356
+#: quake-mode@repsac-by.github.com/prefs.js:771
 msgid "Accelerators"
 msgstr ""
 
 #: quake-mode@repsac-by.github.com/indicator.js:48
 msgid "Settings"
-msgstr ""
-
-msgid "Resize Step - %"
-msgstr ""
-
-msgid "Gap"
-msgstr ""
-
-msgid "Application Toggle Shortcuts"
-msgstr ""
-
-msgid "Resize Shortcuts"
-msgstr ""
-
-msgid "Increase Height"
-msgstr ""
-
-msgid "Decrease Height"
-msgstr ""
-
-msgid "Decrease Width"
-msgstr ""
-
-msgid "Increase Width"
-msgstr ""
-
-msgid "Resize shortcuts work when a quake window is focused"
-msgstr ""
-
-msgid "Monitor Shortcuts"
-msgstr ""
-
-msgid "Monitor shortcuts work when a quake window is focused"
 msgstr ""

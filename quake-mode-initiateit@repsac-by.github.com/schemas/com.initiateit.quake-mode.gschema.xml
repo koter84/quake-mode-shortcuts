@@ -113,6 +113,10 @@
 			<default>false</default>
 		</key>
 
+		<key name="quake-mode-hide-when-unfocused" type="b">
+			<default>false</default>
+		</key>
+
 		<key name="quake-mode-always-on-top" type="b">
 			<default>false</default>
 		</key>
